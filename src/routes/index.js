@@ -75,23 +75,29 @@ router.get('/showWorkers', (req, res) => {
     }).catch(error => res.status(500).send({ error }));
 });
 
-router.get('/tasks', (req, res) => {
+router.get('/team', (req, res) => {
     res.json([{
             _id: 1, // datos publicos 
-            name: 'Mecanico',
-            description: 'lorem ipsum',
+            name: 'Daniela Ocampo',
+            description: 'Gerente general',
             date: "2020-10-25T01:43:19.346Z"
         },
         {
             _id: 2,
-            name: 'Task two',
-            description: 'lorem ipsum',
+            name: 'Arcangel  Marin',
+            description: 'Asistente de gerencia',
             date: "2020-10-25T01:43:19.346Z"
         },
         {
             _id: 3,
-            name: 'Task three',
-            description: 'lorem ipsum',
+            name: 'Pedro Rios',
+            description: 'Gerente financiero',
+            date: "2020-10-25T01:43:19.346Z"
+        },
+        {
+            _id: 4,
+            name: 'Jhon Vasquez ',
+            description: 'Asistente financiero',
             date: "2020-10-25T01:43:19.346Z"
         }
     ]);
