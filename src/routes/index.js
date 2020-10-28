@@ -9,10 +9,10 @@ router.post('/signup', (req, res) => {
 
     let newuser = new User(req.body);
     //guardo con el metodo save el nuevo usuario
-    
-    
 
-    newuser.save().then(user =>{
+
+
+    newuser.save().then(user => {
         payload = { //se debe meter fecha de entrega
             email: user.email,
             name: user.name,
@@ -21,9 +21,9 @@ router.post('/signup', (req, res) => {
 
 
         const token = jwt.sign(payload, 'secretkey'); // aca se deberia de poner la duración del token y demas
-        res.status(201).send({user , token})
+        res.status(201).send({ user, token })
 
-    } ).catch(error => res.status(500).send({message: "User alredy in db",error}));
+    }).catch(error => res.status(500).send({ message: "User alredy in db", error }));
 
 });
 
@@ -40,12 +40,12 @@ router.post('/signin', (req, res) => {
             .then(match => {
                 if (match) {
                     payload = { //se debe meter fecha de entrega
-                        _id: user._id,
-                        email: user.email,
-                        name: user.name
-                    }
-                    //acceso con web token npm i jsonwebtoken
-                    jwt.sign(payload,'secretkey' , function (error, token) {
+                            _id: user._id,
+                            email: user.email,
+                            name: user.name
+                        }
+                        //acceso con web token npm i jsonwebtoken
+                    jwt.sign(payload, 'secretkey', function(error, token) {
                         if (error) {
                             res.status(500).send({ error });
                         } else {
@@ -54,7 +54,7 @@ router.post('/signin', (req, res) => {
                     });
 
                 } else {
-                    res.status(200).send({ message: "Password mala" });//no doy acceso
+                    res.status(200).send({ message: "Password mala" }); //no doy acceso
                 }
 
             }).catch(error => { //se le envia tambien el status para mejorar practicas
@@ -68,12 +68,17 @@ router.post('/signin', (req, res) => {
 
 });
 
-    
+router.get('/showWorkers', (req, res) => {
+    User.find({}).then(users => {
+        if (users.length) return res.status(200).send({ users });
+        return res.status(204).send({ message: 'No content' });
+    }).catch(error => res.status(500).send({ error }));
+});
 
 router.get('/tasks', (req, res) => {
     res.json([{
             _id: 1, // datos publicos 
-            name: 'Task one',
+            name: 'Mecanico',
             description: 'lorem ipsum',
             date: "2020-10-25T01:43:19.346Z"
         },
@@ -95,20 +100,20 @@ router.get('/tasks', (req, res) => {
 router.get('/private-tasks', verifyToken, (req, res) => {
     res.json([{
             _id: 1, // datos publicos 
-            name: 'Task one',
-            description: 'lorem ipsum',
+            name: 'Nota 1',
+            description: 'Enviar cuenta de cobro',
             date: "2020-10-25T01:43:19.346Z"
         },
         {
             _id: 2,
-            name: 'Task two',
-            description: 'lorem ipsum',
+            name: 'Nota 2',
+            description: 'Diligenciar horas trabajadas',
             date: "2020-10-25T01:43:19.346Z"
         },
         {
             _id: 3,
-            name: 'Task three',
-            description: 'lorem ipsum',
+            name: 'Nota 3',
+            description: 'Asistir a reunión',
             date: "2020-10-25T01:43:19.346Z"
         }
     ]);
